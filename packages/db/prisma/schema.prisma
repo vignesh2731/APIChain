@@ -14,58 +14,61 @@ url = env("DATABASE_URL")
 }
 
 model User{
-id       Int    @id @default(autoincrement())
-name     String
-email    String @unique
-password String
+    id       Int    @id @default(autoincrement())
+    name     String
+    email    String @unique
+    password String
+    zaps    Zap[]
 }
 
 model Zap{
-id      String      @id @default(uuid())
-trigger Trigger?
-actions Action[]
-zapRun  ZapRun[]
+    id      String      @id @default(uuid())
+    userId  Int?         
+    user    User?        @relation(fields: [userId],references: [id])
+    trigger Trigger?
+    actions Action[]
+    zapRun  ZapRun[]
 }
 
 model Trigger{
-id        String           @id @default(uuid())
-triggerId String
-type      AvailableTrigger @relation(fields: [triggerId],references: [id])
-zapId     String           @unique
-zap       Zap              @relation(fields: [zapId],references: [id])
+    id        String           @id @default(uuid())
+    triggerId String
+    type      AvailableTrigger @relation(fields: [triggerId],references: [id])
+    zapId     String           @unique
+    zap       Zap              @relation(fields: [zapId],references: [id])
 }
 
 model Action{
-id              String          @id @default(uuid())
-actionId        String
-type            AvailableAction @relation(fields: [actionId],references: [id])
-zapId           String
-zap             Zap             @relation(fields: [zapId],references: [id])
-sortingOrder    Int             @default(0)
+    id              String          @id @default(uuid())
+    actionId        String
+    type            AvailableAction @relation(fields: [actionId],references: [id])
+    zapId           String
+    zap             Zap             @relation(fields: [zapId],references: [id])
+    sortingOrder    Int             @default(0)
 }
 
 model AvailableTrigger{
-id       String @id @default(uuid())
-name     String
-triggers Trigger[]
+    id       String @id @default(uuid())
+    name     String
+    triggers Trigger[]
 }
 
 model AvailableAction{
-id      String @id @default(uuid())
-name    String
-actions Action[]
+    id      String @id @default(uuid())
+    name    String
+    actions Action[]
 }
 
 model ZapRun{
-id            String @id @default(uuid())
-zapId         String
-zap           Zap    @relation(fields: [zapId],references: [id])
-zapRunOutbox  ZapRunOutbox?
-metadata      Json
+    id            String @id @default(uuid())
+    zapId         String
+    zap           Zap    @relation(fields: [zapId],references: [id])
+    zapRunOutbox  ZapRunOutbox?
+    metadata      Json
 }
 
 model ZapRunOutbox{
-id       String @id @default(uuid())
-zapRunId String @unique
-zapRun   ZapRun @relation(fields: [zapRunId],references: [id])
+    id       String @id @default(uuid())
+    zapRunId String @unique
+    zapRun   ZapRun @relation(fields: [zapRunId],references: [id])
 }

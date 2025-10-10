@@ -35,9 +35,12 @@ userRouter.post("/signup",async(req,res)=>{
             name: parsedData.data.name
         }
     })
+
+    const token = jwt.sign({id:data.id},JWT_SECRET);
     
     res.json({
-        msg: "User signed in"
+        msg: "User signed in",
+        token
     })
 })
 

@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { Primary } from "./buttons/Primary";
 import { InputBox } from "./InputBox";
 import { useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "./config";
 
 export function SignupComp(){
     const router = useRouter();
@@ -24,7 +26,21 @@ export function SignupComp(){
                     <InputBox label="Password " placeholder="Password" type="password" onChangeAction={(value)=>{
                         setPassword(value);
                     }} />
-                    <Primary label="Signup" onClickAction={()=>{}} className="font-bold w-80 h-10" />
+                    <Primary label="Signup" onClickAction={async()=>{
+                        const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,{
+                            username:email,
+                            password,
+                            name
+                        });
+                        const token = response.data.token;
+                        if(token){
+                            localStorage.setItem("token",token);
+                            router.push("/dashboard");
+                        }
+                        else{
+                            alert("Username already exists")
+                        }
+                    }} className="font-bold w-80 h-10" />
                     <div className="flex justify-center">
                     {"Already have an account? "}&nbsp;
                     <div className="text-blue-400 underline cursor-pointer" onClick={()=>{

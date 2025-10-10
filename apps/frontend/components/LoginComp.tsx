@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { Primary } from "./buttons/Primary";
 import { InputBox } from "./InputBox";
 import { useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "./config";
 
 export function LoginComp(){
     const router = useRouter();
@@ -20,7 +22,20 @@ export function LoginComp(){
                 <InputBox label="Password " placeholder="Password" type="password" onChangeAction={(value)=>{
                     setPassword(value);
                 }} />
-                <Primary label="Login" onClickAction={()=>{}} className="font-bold w-80 h-10" />
+                <Primary label="Login" onClickAction={async()=>{
+                    const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,{
+                        username:email,
+                        password
+                    });
+                    const token = response.data.token;
+                    if(token){
+                        localStorage.setItem("token",token);
+                        router.push("/dashboard");
+                    }
+                    else{
+                        alert("Wrong password")
+                    }
+                }} className="font-bold w-80 h-10" />
                 <div className="flex justify-center">
                 {"Don't have a Zapier account yet? "}&nbsp;
                 <div className="text-blue-400 underline cursor-pointer" onClick={()=>{

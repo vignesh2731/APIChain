@@ -14,6 +14,9 @@ zapRouter.get("/",authMiddleware,async(req,res)=>{
             userId:id,
         },
         select:{
+            id:true,
+            name:true,
+            createdOn:true,
             trigger:{
                 select:{
                     type:{
@@ -53,7 +56,8 @@ zapRouter.post("/",authMiddleware,async(req,res)=>{
     const zapId = await db.$transaction(async tx=>{
         const zap = await tx.zap.create({
             data:{
-                userId:id
+                userId:id,
+                name: parsedData.data.name
             }
         })
         const triggerId = await tx.trigger.create({
@@ -110,4 +114,16 @@ zapRouter.get("/:zapId",authMiddleware,async(req,res)=>{
         }
     })
     res.json({zap}) ;
+})
+
+zapRouter.get("/triggers/getAvailableTriggers",async(req,res)=>{
+    const response = await db.availableTrigger.findMany({});
+    const triggers = response;
+    return res.json({triggers}); 
+})
+
+zapRouter.get("/actions/getAvailableActions",async(req,res)=>{
+    const response = await db.availableAction.findMany({});
+    const actions = response;
+    return res.json({actions});
 })

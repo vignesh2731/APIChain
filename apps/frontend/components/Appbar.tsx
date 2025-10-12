@@ -36,7 +36,7 @@ export function Appbar(){
                     }} className="w-24 h-8 font-semibold text-sm hover:shadow-md"/>                                          
                 </div>}
                 {token && <div>
-                    <Secondary label="Logout" className="border border-slate-200 p-2 rounded-2xl" onClickAction={()=>{
+                    <Secondary label="Logout" className="border border-slate-200 p-2 rounded-2xl font-semibold bg-white " onClickAction={()=>{
                         localStorage.removeItem("token");
                         setToken(null);
                         router.push("/");

@@ -1,10 +1,23 @@
-export function ZapCellTrigger(){
+"use client"
+import { availableTriggersType } from "@/app/create-zap/page";
+
+export function ZapCellTrigger({list,callback}:{list:availableTriggersType[],callback:(value:string)=>void}){
     return(
-        <div className="flex flex-col items-center gap-6">
-            <div className="bg-white rounded-xl shadow-md p-3 w-72 h-24 hover:shadow-lg">
-                <div className="flex justify-center items-center h-full font-bold text-xl">
-                    <div>
-                        {"Web-hook"}
+        <div className="flex flex-col items-center gap-4">
+            <div className="bg-white rounded-xl shadow-md p-3 w-72 h-32 hover:shadow-lg">
+                <div className="flex flex-col gap-6 justify-center items-center h-full  ">
+                    <div className="font-bold text-xl">
+                        {"Trigger"}
+                    </div>
+                    <div className="">
+                        <select className="w-48 h-8 border border-slate-300 rounded" defaultValue={"none"} onChange={(e)=>{
+                            callback(e.target.value);
+                        }}>
+                            <option value="none" disabled >Select a trigger</option>
+                            {list && list.map((li,key)=>(
+                                <option value={li.id} key={key}>{li.name}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             </div>

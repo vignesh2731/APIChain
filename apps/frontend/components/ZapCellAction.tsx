@@ -9,7 +9,7 @@ export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string}[
     useEffect(()=>{
         let timeout = setTimeout(()=>{
             callback(idx,select,metadata);
-            console.log("Triggered useEffect")
+            console.log(select);
         },3000);
 
         return ()=>{
@@ -17,7 +17,7 @@ export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string}[
         }
     },[metadata,select])
     return(
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-4">
             <div className="bg-white rounded-xl shadow-md p-3 w-72 h-52 hover:shadow-lg mt-2">
                 <div className="flex flex-col gap-5">
                     <div className="flex justify-center items-center h-full font-bold text-xl">
@@ -25,10 +25,12 @@ export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string}[
                             {"Action"}
                         </div>
                     </div>
-                    <select
+                    <select className="border border-slate-300 h-8" 
+                    defaultValue={"none"}
                      onChange={(e)=>{
                         setSelect(e.target.value);
                     }}>
+                        <option value="none" disabled>Select an action</option>
                         {list && list.map((li,key)=>(
                             <option value={li.id} key={key}>{li.name}</option>
                         ))}

@@ -71,7 +71,8 @@ zapRouter.post("/",authMiddleware,async(req,res)=>{
                 data:{
                     zapId: zap.id,
                     sortingOrder: index,
-                    actionId: a.availableActionId
+                    actionId: a.availableActionId,
+                    metadata: JSON.parse(a.actionMetadata)
                 }
             })
         })
@@ -114,16 +115,4 @@ zapRouter.get("/:zapId",authMiddleware,async(req,res)=>{
         }
     })
     res.json({zap}) ;
-})
-
-zapRouter.get("/triggers/getAvailableTriggers",async(req,res)=>{
-    const response = await db.availableTrigger.findMany({});
-    const triggers = response;
-    return res.json({triggers}); 
-})
-
-zapRouter.get("/actions/getAvailableActions",async(req,res)=>{
-    const response = await db.availableAction.findMany({});
-    const actions = response;
-    return res.json({actions});
 })

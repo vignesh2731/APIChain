@@ -3,22 +3,23 @@
 import { useEffect, useState } from "react"
 import { InputBox } from "./InputBox"
 
-export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string}[],callback:(idx:number,id:string,metadata:string)=>void,idx:number}){
-    const [metadata,setMetadata] = useState("");
+export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string,metadata:string[]}[],callback:(idx:number,id:string,metadata:string)=>void,idx:number}){
+    const [inputData,setInputData] = useState<string[] | null>(null);
     const [select,setSelect] = useState("");
     useEffect(()=>{
         let timeout = setTimeout(()=>{
-            callback(idx,select,metadata);
-            console.log(select);
+            let idx = 0;
+            let obj = list.find(l=>l.id===select)?.metadata.reduce((ac,a)=>({...ac,[a]:(inputData)?inputData[idx++]:''}),{})
+            console.log(obj);
+            callback(idx,select,JSON.stringify(obj));
         },3000);
-
         return ()=>{
             clearTimeout(timeout);
         }
-    },[metadata,select])
+    },[inputData,select])
     return(
         <div className="flex flex-col items-center gap-4">
-            <div className="bg-white rounded-xl shadow-md p-3 w-72 h-52 hover:shadow-lg mt-2">
+            <div className="bg-white rounded-xl shadow-md p-10 min-w-80  hover:shadow-lg mt-2">
                 <div className="flex flex-col gap-5">
                     <div className="flex justify-center items-center h-full font-bold text-xl">
                         <div>
@@ -35,10 +36,17 @@ export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string}[
                             <option value={li.id} key={key}>{li.name}</option>
                         ))}
                     </select>
-                    <div>
-                        <InputBox label="Metadata" onChangeAction={(value)=>{
-                            setMetadata(value);
-                        }} placeholder="metadata" type="string" className="w-[250px]" />
+                    <div className="flex flex-col gap-4">
+                        {select && list.find(l=>l.id===select)?.metadata.map((m,key)=>(
+                            <div className="" key={key}>
+                                <InputBox label={m} onChangeAction={(value)=>{
+                                    let newData = [...inputData || []];
+                                    newData[key] = value;
+                                    setInputData(newData);
+                                }} placeholder="" type="string" className="w-[250px] text-sm" />
+                            </div>
+                        ))}
+                        
                     </div>
                 </div>
             </div>

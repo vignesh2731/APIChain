@@ -7,14 +7,16 @@ import { InputBox } from "@/components/InputBox";
 import { ZapCellAction } from "@/components/ZapCellAction";
 import { ZapCellTrigger } from "@/components/ZapCellTrigger";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface availableActionsType{
     id:string,
-    name:string
+    name:string,
+    metadata:string[]
 }
 
-interface actionsPlusMetadata extends Omit<availableActionsType,'name'>{
+interface actionsPlusMetadata extends Omit<availableActionsType,'name'|'metadata'>{
     metadata?:string
 }
 
@@ -30,11 +32,12 @@ export default function CreateZap(){
     const [actions,setActions] = useState<actionsPlusMetadata[]>();
     const [trigger,setTrigger] = useState(""); 
     const[availableTriggers,setAvailableTriggers] = useState<availableTriggersType[]>();
+    const router = useRouter();
     useEffect(()=>{
         async function main(){
-            const response = await axios.get(`${BACKEND_URL}/api/v1/zap/actions/getAvailableActions`);
+            const response = await axios.get(`${BACKEND_URL}/api/v1/action/available`);
             setAvailableActions(response.data.actions);
-            const triggers = await axios.get(`${BACKEND_URL}/api/v1/zap/triggers/getAvailableTriggers`);
+            const triggers = await axios.get(`${BACKEND_URL}/api/v1/trigger/available`);
             setAvailableTriggers(triggers.data.triggers);
         }
         main();
@@ -62,6 +65,7 @@ export default function CreateZap(){
                 Authorization:localStorage.getItem("token")
             }
         })
+        router.push("/dashboard");
     }
     function callback(idx:number,id:string,metadata?:string){
         if(!id || id==='')return;

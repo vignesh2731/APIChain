@@ -35,7 +35,7 @@ export function ZapsTable(){
     },[])
     
     return(
-        <div className="flex flex-col w-full ">
+        <div className="flex flex-col w-full p-4">
             <div className="flex justify-between border-slate-300 border rounded-md h-16 items-center px-20">
                 {tableContents.map((t,key)=>(
                     <div className="w-24 flex font-bold text-sm" key={key}>

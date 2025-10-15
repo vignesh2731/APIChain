@@ -1,26 +1,31 @@
 "use client"
 import axios from "axios"
 import Link from "next/link"
-import { BACKEND_URL } from "./config"
+import { BACKEND_URL, HOOK_URL } from "./config"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 interface ZapType{
     actions:{
         type:{
-            name:string
+            name:string;
+            image:string;
         }
     }[],
     id: string,
-    name:string
+    name:string,
+    userId: number,
     trigger:{
         type:{
-            name:string
+            name:string,
+            image:string;
         }
     },
     createdOn:Date
 }
 export function ZapsTable(){
-    const tableContents = [ "Name","Type", "Date","Actions"]
+    const tableContents = [ "Name","Type","Hook-Url", "Date","Actions"]
+    const router = useRouter();
     const [zapData,setZapData] = useState<ZapType[]>();
     useEffect(()=>{
         async function main(){
@@ -36,30 +41,35 @@ export function ZapsTable(){
     
     return(
         <div className="flex flex-col w-full p-4">
-            <div className="flex justify-between border-slate-300 border rounded-md h-16 items-center px-20">
+            <div className="flex justify-between border-slate-300 border rounded-md h-16 items-center px-10">
                 {tableContents.map((t,key)=>(
-                    <div className="w-24 flex font-bold text-sm" key={key}>
+                    <div className="justify-between flex font-bold text-sm min-w-60 " key={key}>
                         {t}
                     </div>
                 ))}
             </div>
             {zapData && zapData.map((d,key)=>(
-                <Link href={`/zap/${d.id}`} key={key}>
-                    <div className="flex justify-between border-slate-300 border rounded-md h-16 items-center px-20 hover:bg-slate-100 ">  
-                        <div className="w-24">
-                            {d.name}
-                        </div>
-                        <div className="w-24">
-                            {d.trigger.type.name}
-                        </div>
-                        <div className="w-24">
-                            {new Date(d.createdOn).toLocaleDateString()}
-                        </div>
-                        <div className="w-24">
-                            {d.actions.length}
-                        </div>
+                <div className="flex border-slate-300 border rounded-md h-16 items-center px-10 hover:bg-slate-100" key={key} onClick={()=>{
+                    router.push(`/zap/${d.id}`)
+                }}>  
+                    <div className="min-w-60 ">
+                        {d?.name}
                     </div>
-                </Link>
+                    <div className="min-w-60 ">
+                        <img src={d.trigger?.type.image} alt="" className="h-10 rounded-full -ml-3" />
+                    </div>
+                    <div className="min-w-60 truncate hover:text-slate-700 pr-10">
+                        <Link href={`${HOOK_URL}/${d.userId}/${d.id}`} target="_blank" rel="noopener noreferrer"><p className="overflow-scroll">{`${HOOK_URL}/${d.userId}/${d.id}`}</p></Link>
+                    </div>
+                    <div className="min-w-60 ">
+                        {new Date(d.createdOn).toLocaleDateString()}
+                    </div>
+                    <div className="min-w-60 flex gap-2 ">
+                        {d.actions.map((dr,k1)=>(
+                            <img src={dr.type.image} alt="" className="h-10 rounded-full" key={k1} />
+                        ))}
+                    </div>
+                </div>
             ))}
             
         </div>

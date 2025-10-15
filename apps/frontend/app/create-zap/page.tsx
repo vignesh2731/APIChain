@@ -68,12 +68,13 @@ export default function CreateZap(){
         router.push("/dashboard");
     }
     function callback(idx:number,id:string,metadata?:string){
-        if(!id || id==='')return;
+        if(!id)return;
         const newActions = [...actions || []];
+        console.log(idx,"Index of the action");
         if(!newActions || idx>=newActions?.length)newActions?.push({id,metadata});
         else newActions[idx] = {id,metadata};
         setActions(newActions);
-        console.log(newActions);
+        console.log(newActions,'new Actions');
     }
     function removeCallbackdata(){
         if(actions){

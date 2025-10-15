@@ -8,9 +8,8 @@ export function ZapCellAction({list,idx,callback}:{list:{name:string,id:string,m
     const [select,setSelect] = useState("");
     useEffect(()=>{
         let timeout = setTimeout(()=>{
-            let idx = 0;
-            let obj = list.find(l=>l.id===select)?.metadata.reduce((ac,a)=>({...ac,[a]:(inputData)?inputData[idx++]:''}),{})
-            console.log(obj);
+            let index = 0;
+            let obj = list.find(l=>l.id===select)?.metadata.reduce((ac,a)=>({...ac,[a]:(inputData)?inputData[index++]:''}),{})
             callback(idx,select,JSON.stringify(obj));
         },3000);
         return ()=>{

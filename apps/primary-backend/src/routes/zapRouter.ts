@@ -15,6 +15,7 @@ zapRouter.get("/",authMiddleware,async(req,res)=>{
         },
         select:{
             id:true,
+            userId:true,
             name:true,
             createdOn:true,
             trigger:{
@@ -22,6 +23,7 @@ zapRouter.get("/",authMiddleware,async(req,res)=>{
                     type:{
                         select:{
                             name:true,
+                            image:true,
                         }
                     }
                 }
@@ -30,7 +32,8 @@ zapRouter.get("/",authMiddleware,async(req,res)=>{
                 select:{
                     type:{
                         select:{
-                            name:true
+                            name:true,
+                            image:true
                         }
                     }
                 }

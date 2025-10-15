@@ -53,13 +53,15 @@ model Action{
 model AvailableTrigger{
     id       String @id @default(uuid())
     name     String
+    image    String @default("")
     triggers Trigger[]
 }
 
 model AvailableAction{
-    id       String @id @default(uuid())
+    id       String   @id @default(uuid())
     name     String
     metadata String[] @default([])
+    image    String   @default("")
     actions  Action[]
 }
 

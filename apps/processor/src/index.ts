@@ -19,7 +19,7 @@ async function main(){
         
         await producer.send({
             topic:TOPIC_NAME,
-            messages:pendingRows.map(r=>({value: r.zapRunId}))
+            messages:pendingRows.map(r=>({value: JSON.stringify({id:r.zapRunId,state:0})}))
         })
 
         await db.zapRunOutbox.deleteMany({

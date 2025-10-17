@@ -25,6 +25,6 @@ app.post("/hooks/catch/:userId/:zapId",async(req,res)=>{
     })
 })
 
-app.listen(3000,()=>{
-    console.log("Listening to port 3000")
+app.listen(3002,()=>{
+    console.log("Listening to port 3002")
 })

@@ -56,15 +56,14 @@ async function main(){
                 const finalData = parse(actionMetadata?.body,metadata)
                 //@ts-ignore
                 const finalEmail = parse(actionMetadata?.to,metadata);
-                console.log(finalData,finalEmail)
-                await Email(finalEmail,finalData);                
+                await Email(finalEmail,finalData);   
+                console.log("Email sent");          
             }
             if(requiredAction?.type.name==='Send Solana'){
                 //@ts-ignore
                 const finalAmount = parse(actionMetadata?.amount,metadata)
                 //@ts-ignore
                 const finalKey = parse(actionMetadata?.privateKey,metadata);
-                console.log(finalAmount,finalKey);
                 await Solana(finalAmount,finalKey);
             }
             if(data.state<totalActionsLength){

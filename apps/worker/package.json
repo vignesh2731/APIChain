@@ -4,12 +4,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"npx esbuild ./src/index.ts --bundle --platform=node --outdir=dist",
-    "start":"node dist/index.js",
-    "dev":"npm run build && npm run start"
+    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outdir=dist",
+    "start": "node dist/index.js",
+    "dev": "npm run build && npm run start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@types/nodemailer": "^7.0.2",
+    "@types/nodemailer-ses-transport": "^1.5.5",
+    "client-sesv2": "github:aws-sdk/client-sesv2",
+    "dotenv": "^17.2.3",
+    "nodemailer": "^7.0.9",
+    "nodemailer-ses-transport": "^1.5.1"
+  }
 }

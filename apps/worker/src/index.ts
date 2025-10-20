@@ -19,13 +19,7 @@ async function main(){
     await producer.connect();
     await consumer.run({
         autoCommit:false,
-        eachMessage:async({partition,message,topic})=>{
-            // console.log({
-            //     partition,
-            //     offset:message.offset,
-            //     value: message.value?.toString(),
-            // })
-            
+        eachMessage:async({partition,message,topic})=>{            
             const data = JSON.parse(message?.value?.toString() || "");
             const zapDetails = await db.zapRun.findFirst({
                 where:{
@@ -64,7 +58,7 @@ async function main(){
                 const finalAmount = parse(actionMetadata?.amount,metadata)
                 //@ts-ignore
                 const finalKey = parse(actionMetadata?.privateKey,metadata);
-                await Solana(finalAmount,finalKey);
+                await Solana(finalKey,finalAmount);
             }
             if(data.state<totalActionsLength){
                 await producer.send({

@@ -12,8 +12,8 @@ const transporter = nodemailer.createTransport({
 });
 export async function Email(to:string,body:string){
     const info = await transporter.sendMail({
-    from: 'sreevignesh27@gmail.com',
-    to: "sreevignesh27@gmail.com",
+    from: process.env.FROM ?? "sreevignesh27@gmail.com",
+    to: to,
     subject: `${to}`,
     text: `${body}`
   });

@@ -13,8 +13,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@solana/web3.js": "^1.98.4",
     "@types/nodemailer": "^7.0.2",
     "@types/nodemailer-ses-transport": "^1.5.5",
+    "bs58": "^6.0.0",
     "client-sesv2": "github:aws-sdk/client-sesv2",
     "dotenv": "^17.2.3",
     "nodemailer": "^7.0.9",
